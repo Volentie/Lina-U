@@ -6,7 +6,7 @@ namespace Lina.Player.Camera
 {
 	[RequireComponent(typeof(InputProvider))]
 	[RequireComponent(typeof(MouseSetting))]
-	public class FirstPersonCamera : MonoBehaviour, ICameraLook
+	public class CameraLook : MonoBehaviour, ICameraLook
 	{
 		[SerializeField] private float _mouseSensitivity = 10f;
 		[SerializeField] private Transform _cameraTransform;
