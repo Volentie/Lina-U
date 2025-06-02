@@ -11,5 +11,8 @@ namespace Lina.Player.Input
 			Input.GetAxis("Horizontal"),
 			Input.GetAxis("Vertical")
 		);
+
+		public bool GetJumpPressed() => Input.GetKey(KeyCode.Space);
+		public bool GetSprintPressed() => Input.GetKey(KeyCode.LeftShift);
 	}
 }

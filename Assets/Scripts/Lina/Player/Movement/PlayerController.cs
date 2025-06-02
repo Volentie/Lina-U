@@ -27,7 +27,7 @@ namespace Lina.Player.Movement
 			_handleJump = GetComponent<IHandleJump>();
 		}
 
-		void FixedUpdate()
+		void Update()
 		{
 			HandleMovement(_inputProvider.GetMovementDelta());
 		}
@@ -35,16 +35,20 @@ namespace Lina.Player.Movement
 		public void HandleMovement(Vector2 movementDelta)
 		{
 			if (!IsGrounded)
-				{
-					_handleGravity.ApplyGravity(ref _velocity);
-				}
-				else
-				{
-					_velocity = transform.forward * movementDelta.y + transform.right * movementDelta.x;
+			{
+				_handleGravity.ApplyGravity(ref _velocity);
+			}
+			else
+			{
+				_velocity = transform.forward * movementDelta.y + transform.right * movementDelta.x;
+				_velocity = Vector3.ClampMagnitude(_velocity, 1.0f);
+				if (_inputProvider.GetSprintPressed())
+					_velocity *= 1.5f;
+				if (_inputProvider.GetJumpPressed())
 					_handleJump.DoJump(ref _velocity);
-				}
-			
-			Vector3 moveVec = _velocity * Speed * Time.fixedDeltaTime;
+			}
+
+			Vector3 moveVec = _velocity * Speed * Time.deltaTime;
 			_characterController.Move(moveVec);
 		}
 	}
