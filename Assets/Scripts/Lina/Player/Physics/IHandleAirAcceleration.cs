@@ -1,8 +1,10 @@
+using UnityEngine;
+
 namespace Lina.Player.Physics
 {
-	using UnityEngine;
-	interface IHandleAirAcceleration
+	public interface IHandleAirAcceleration
 	{
-		void AirAccelerate(ref Vector3 velocity, Vector3 intendedVelocity);
+		float AirAcceleration { get; }
+		void AirAccelerate(Vector3 wishDir, ref Vector3 velocity, Transform transform);
 	}
 }

@@ -2,15 +2,16 @@ using UnityEngine;
 
 namespace Lina.Player.Physics
 {
-	class HandleAirAcceleration : MonoBehaviour, IHandleAirAcceleration
-	{
-		public void AirAccelerate(ref Vector3 velocity, Vector3 intendedVelocity)
+    class HandleAirAcceleration : MonoBehaviour, IHandleAirAcceleration
+    {
+		public float AirAcceleration => 1.5f;
+		public void AirAccelerate(Vector3 wishDir, ref Vector3 velocity, Transform transform)
 		{
-			// TODO: Improve this
-			Vector2 sdVelocity = new Vector2(velocity.x, velocity.z);
-			Vector2 sdIntendedVelocity = new Vector2(intendedVelocity.x, intendedVelocity.z);
-			Vector2 lerpVelocity = Vector2.Lerp(sdVelocity, sdIntendedVelocity, 0.55f);
-			velocity = new Vector3(lerpVelocity.x, velocity.y, lerpVelocity.y);
+			Vector3 forwardDir = transform.forward;
+			float projSpeed = Vector3.Dot(wishDir.normalized, forwardDir);
+			Vector3 sumForward = new Vector3(forwardDir.x * projSpeed, 0, forwardDir.z * projSpeed);
+			sumForward *= AirAcceleration;
+			velocity += sumForward * Time.deltaTime;
 		}
-	}
+    }
 }

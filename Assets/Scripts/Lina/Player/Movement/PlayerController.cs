@@ -19,7 +19,7 @@ namespace Lina.Player.Movement
 		private IHandleAirAcceleration _handleAirMovement;
 		private Vector3 _velocity;
 		private CharacterController _characterController;
-		private bool IsGrounded => _characterController.isGrounded;
+		private bool IsGrounded;
 
 		void Awake()
 		{
@@ -37,22 +37,25 @@ namespace Lina.Player.Movement
 
 		public void HandleMovement()
 		{
-			Vector3 intendedVelocity = transform.forward * _inputProvider.GetMovementDelta().y + transform.right * _inputProvider.GetMovementDelta().x;
+			Vector3 wishDir = transform.forward * _inputProvider.GetMovementDelta().y + transform.right * _inputProvider.GetMovementDelta().x;
+			wishDir = Vector3.ClampMagnitude(wishDir, 1.0f);
+			_velocity = new Vector3(wishDir.x, _velocity.y, wishDir.z);
+			IsGrounded = _characterController.isGrounded;
 			if (!IsGrounded)
 			{
-				_handleAirMovement.AirAccelerate(ref _velocity, intendedVelocity);
+				_handleAirMovement.AirAccelerate(wishDir, ref _velocity, transform);
 				_handleGravity.ApplyGravity(ref _velocity);
 			}
 			else
 			{
-				_velocity = intendedVelocity;
-				_velocity = Vector3.ClampMagnitude(_velocity, 1.0f);
 				if (_inputProvider.GetSprintPressed())
-					_velocity *= 1.5f;
+				{
+					_velocity.x *= 1.5f;
+					_velocity.z *= 1.5f;
+				}
 				if (_inputProvider.GetJumpPressed())
 					_handleJump.DoJump(ref _velocity);
 			}
-
 			Vector3 moveVec = _velocity * Speed * Time.deltaTime;
 			_characterController.Move(moveVec);
 		}
