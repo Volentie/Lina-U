@@ -14,5 +14,6 @@ namespace Lina.Player.Input
 
 		public bool GetJumpPressed() => Input.GetKey(KeyCode.Space);
 		public bool GetSprintPressed() => Input.GetKey(KeyCode.LeftShift);
+		public bool GetActionPressed() => Input.GetKey(KeyCode.Mouse0);
 	}
 }

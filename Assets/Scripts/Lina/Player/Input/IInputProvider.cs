@@ -8,5 +8,6 @@ namespace Lina.Player.Input
 		Vector2 GetMovementDelta();
 		bool GetJumpPressed();
 		bool GetSprintPressed();
+		bool GetActionPressed();
 	}
 }
