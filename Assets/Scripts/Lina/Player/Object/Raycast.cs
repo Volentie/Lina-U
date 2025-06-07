@@ -4,7 +4,7 @@ namespace Lina.Player.Object
 {
 	class Raycast : MonoBehaviour, IRaycast
 	{
-		public float RayLength => 5f;
+		public float RayLength => 2f;
 		UnityEngine.Camera cam;
 		void Awake()
 		{
@@ -12,12 +12,10 @@ namespace Lina.Player.Object
 		}
 		public RaycastHit RayCast()
 		{
+			LayerMask layerMask = LayerMask.GetMask("Object");
 			Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
 			RaycastHit hit;
-			if (UnityEngine.Physics.Raycast(ray, out hit, RayLength))
-			{
-				Debug.DrawRay(ray.origin, ray.direction, Color.yellow);
-			}
+			UnityEngine.Physics.Raycast(ray, out hit, RayLength, layerMask);
 			return hit;
 		}	
 	}

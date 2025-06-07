@@ -9,5 +9,8 @@ namespace Lina.Player.Input
 		bool GetJumpPressed();
 		bool GetSprintPressed();
 		bool GetActionPressed();
+		bool GetJumpReleased();
+		bool GetSprintReleased();
+		bool GetActionReleased();
 	}
 }
