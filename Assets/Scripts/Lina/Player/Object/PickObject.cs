@@ -5,50 +5,42 @@ namespace Lina.Player.Object
 {
 	[RequireComponent(typeof(Raycast))]
 	[RequireComponent(typeof(InputProvider))]
+	[RequireComponent(typeof(DetectObject))]
 	class PickObject : MonoBehaviour, IPickObject
 	{
 		private IInputProvider _inputProvider;
-		private IRaycast _raycast;
-		private Rigidbody obj;
+		private IDetectObject _detectObject;
+		private Rigidbody _obj;
 		UnityEngine.Camera cam;
 		void Awake()
 		{
 			_inputProvider = GetComponent<IInputProvider>();
-			_raycast = GetComponent<IRaycast>();
+			_detectObject = GetComponent<IDetectObject>();
 			cam = UnityEngine.Camera.main;
 		}
 		void Update()
 		{
-			HandleObjects();
+			PickObjectUp();
 		}
-		public void HandleObjects()
+		public void PickObjectUp()
 		{
-			if (_inputProvider.GetActionPressed())
+			if (!_obj)
 			{
-				RaycastHit hit = _raycast.RayCast();
-				if (hit.transform || obj)
-				{
-					Ray playerEyes = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
-					if (!obj)
-					{
-						obj = hit.rigidbody;
-					}
-					if (obj != null)
-					{
-						if (obj.useGravity)
-						{
-							obj.useGravity = false;
-						}
-						obj.linearVelocity = (cam.transform.position + playerEyes.direction - obj.position) / obj.mass;
-					}
-				}
+				_obj = _detectObject.TryDetectObject();
 			}
-			else if (_inputProvider.GetActionReleased())
+			if (_obj)
 			{
-				if (obj)
+				Ray playerEyes = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
+				if (_obj.useGravity)
 				{
-					obj.useGravity = true;
-					obj = null;
+					_obj.useGravity = false;
+				}
+				_obj.linearVelocity = (cam.transform.position + playerEyes.direction - _obj.position) / (_obj.mass * 0.1f);
+
+				if (_inputProvider.GetActionReleased())
+				{
+					_obj.useGravity = true;
+					_obj = null;
 				}
 			}
 		}

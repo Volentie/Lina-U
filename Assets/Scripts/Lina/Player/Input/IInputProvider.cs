@@ -12,5 +12,6 @@ namespace Lina.Player.Input
 		bool GetJumpReleased();
 		bool GetSprintReleased();
 		bool GetActionReleased();
+		bool GetRotatePressed();
 	}
 }
