@@ -1,4 +1,5 @@
 using Lina.Player.Input;
+using Lina.Player.Physics;
 using UnityEngine;
 
 namespace Lina.Player.Object
@@ -8,41 +9,45 @@ namespace Lina.Player.Object
 	[RequireComponent(typeof(DetectObject))]
 	class PickObject : MonoBehaviour, IPickObject
 	{
+		[Header("Pull Settings")]
+        [SerializeField] private float pullStrength = 0.1f;
+        [SerializeField] private float maxLength	= 10f;
+
+		private IObjectPuller _objectPuller;
 		private IInputProvider _inputProvider;
 		private IDetectObject _detectObject;
-		private Rigidbody _obj;
-		UnityEngine.Camera cam;
+		private Rigidbody _held;
+		private UnityEngine.Camera _cam;
+
 		void Awake()
 		{
 			_inputProvider = GetComponent<IInputProvider>();
 			_detectObject = GetComponent<IDetectObject>();
-			cam = UnityEngine.Camera.main;
+			_cam = UnityEngine.Camera.main;
+			_objectPuller = new DefaultObjectPuller(pullStrength, maxLength);
 		}
-		void Update()
-		{
-			PickObjectUp();
-		}
-		public void PickObjectUp()
-		{
-			if (!_obj)
-			{
-				_obj = _detectObject.TryDetectObject();
-			}
-			if (_obj)
-			{
-				Ray playerEyes = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
-				if (_obj.useGravity)
-				{
-					_obj.useGravity = false;
-				}
-				_obj.linearVelocity = (cam.transform.position + playerEyes.direction - _obj.position) / (_obj.mass * 0.1f);
+		void Update() => TryPickOrRelease();
+		void FixedUpdate() => ApplyHoldPhysics();
 
-				if (_inputProvider.GetActionReleased())
-				{
-					_obj.useGravity = true;
-					_obj = null;
-				}
+		public void TryPickOrRelease()
+		{
+			if (_held == null && _detectObject.TryDetectObject() is Rigidbody candidate)
+			{
+				_held = candidate;
+				_held.useGravity = false;
 			}
+			else if (_held != null && _inputProvider.GetActionReleased())
+			{
+				_held.useGravity = true;
+				_held = null;
+			}
+		}
+
+		public void ApplyHoldPhysics()
+		{
+			if (_held == null) return;
+			Vector3 vel = _objectPuller.CalculateVelocity(_held, _cam);
+			_held.linearVelocity = vel;
 		}
 	}
 }

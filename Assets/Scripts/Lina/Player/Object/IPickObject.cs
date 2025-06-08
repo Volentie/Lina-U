@@ -2,6 +2,7 @@ namespace Lina.Player.Object
 {
 	interface IPickObject
 	{
-		void PickObjectUp();
+		void TryPickOrRelease();
+		void ApplyHoldPhysics();
 	}
 }
