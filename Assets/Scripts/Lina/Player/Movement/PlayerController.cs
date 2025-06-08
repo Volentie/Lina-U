@@ -30,10 +30,7 @@ namespace Lina.Player.Movement
 			_handleAirMovement = GetComponent<IHandleAirAcceleration>();
 		}
 
-		void Update()
-		{
-			HandleMovement();
-		}
+		void FixedUpdate() => HandleMovement();
 
 		public void HandleMovement()
 		{
@@ -56,7 +53,7 @@ namespace Lina.Player.Movement
 				if (_inputProvider.GetJumpPressed())
 					_handleJump.DoJump(ref _velocity);
 			}
-			Vector3 moveVec = _velocity * Speed * Time.deltaTime;
+			Vector3 moveVec = _velocity * Speed * Time.fixedDeltaTime;
 			_characterController.Move(moveVec);
 		}
 	}
