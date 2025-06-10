@@ -1,5 +1,6 @@
 using Lina.Player.Input;
 using Lina.Player.Physics;
+using Lina.State.Player.Mouse;
 using UnityEngine;
 
 namespace Lina.Player.Object
@@ -7,6 +8,7 @@ namespace Lina.Player.Object
 	[RequireComponent(typeof(InputProvider))]
 	[RequireComponent(typeof(DetectObject))]
 	[RequireComponent(typeof(ObjectPuller))]
+	[RequireComponent(typeof(MouseModeManager))]
 	class PickObject : MonoBehaviour, IPickObject
 	{
 		[Header("Pull Settings")]
@@ -16,6 +18,7 @@ namespace Lina.Player.Object
 		private IObjectPuller _objectPuller;
 		private IInputProvider _inputProvider;
 		private IDetectObject _detectObject;
+		private IMouseModeProvider _mouseModeProvider;
 		private UnityEngine.Camera _cam;
 		private Rigidbody _held;
 
@@ -26,6 +29,7 @@ namespace Lina.Player.Object
 			_inputProvider = GetComponent<IInputProvider>();
 			_detectObject = GetComponent<IDetectObject>();
 			_objectPuller = GetComponent<IObjectPuller>();
+			_mouseModeProvider = GetComponent<IMouseModeProvider>();
 			_cam = UnityEngine.Camera.main;
 		}
 		void Update() => TryPickOrRelease();
@@ -42,6 +46,7 @@ namespace Lina.Player.Object
 			{
 				_held.useGravity = true;
 				_held = null;
+				_mouseModeProvider.SetMode(MouseMode.FreeLook);
 			}
 		}
 

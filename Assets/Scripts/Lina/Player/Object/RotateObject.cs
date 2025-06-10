@@ -24,15 +24,19 @@ namespace Lina.Player.Object
 		void FixedUpdate() => HandleObjectRotation();
 		public void HandleObjectRotation()
 		{
-			if (_mouseModeProvider.CurrentMode == MouseMode.ObjectManipulation)
+			if (_inputProvider.GetRotatePressed() && _pickObject.Held)
 			{
+				_mouseModeProvider.SetMode(MouseMode.ObjectManipulation);
 				// Store the object
 				Rigidbody obj = _pickObject.Held;
 				// Rotate object accordingly to mouse position
 				float x = _inputProvider.GetMouseDelta().x * _objectRotationSpeed;
 				float y = _inputProvider.GetMouseDelta().y * _objectRotationSpeed;
-				print(_mouseModeProvider.CurrentMode);
 				obj.rotation *= Quaternion.Euler(-y, -x, 0);
+			}
+			if (_inputProvider.GetRotateReleased() && _pickObject.Held)
+			{
+				_mouseModeProvider.SetMode(MouseMode.FreeLook);
 			}
 		}
 	}
