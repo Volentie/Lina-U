@@ -14,30 +14,47 @@ namespace Lina.Player.Object
 		private IInputProvider _inputProvider;
 		private IMouseModeProvider _mouseModeProvider;
 		private IPickObject _pickObject;
+		private UnityEngine.Camera _cam;
 
 		void Awake()
 		{
 			_inputProvider = GetComponent<IInputProvider>();
 			_mouseModeProvider = GetComponent<IMouseModeProvider>();
 			_pickObject = GetComponent<IPickObject>();
+			_cam = UnityEngine.Camera.main;
 		}
 		void FixedUpdate() => HandleObjectRotation();
+		void Update() => RegisterObjectInputs();
 		public void HandleObjectRotation()
 		{
-			if (_inputProvider.GetRotatePressed() && _pickObject.Held)
+			if (_mouseModeProvider.CurrentMode == MouseMode.ObjectManipulation)
 			{
-				_mouseModeProvider.SetMode(MouseMode.ObjectManipulation);
-				// Store the object
+
 				Rigidbody obj = _pickObject.Held;
-				// Rotate object accordingly to mouse position
-				float x = _inputProvider.GetMouseDelta().x * _objectRotationSpeed;
-				float y = _inputProvider.GetMouseDelta().y * _objectRotationSpeed;
-				obj.rotation *= Quaternion.Euler(-y, -x, 0);
+				Vector2 delta = _inputProvider.GetMouseDelta();
+
+				float yaw = delta.x * _objectRotationSpeed;
+				float pitch = delta.y * _objectRotationSpeed;
+
+				// World‐space “left/right” around camera’s up vector
+				Vector3 upAxis = _cam.transform.up;
+				// World‐space “up/down” around camera’s right vector
+				Vector3 rightAxis = _cam.transform.right;
+
+				// Apply yaw first, then pitch:
+				obj.MoveRotation(
+					Quaternion.AngleAxis(-yaw, upAxis)    // drag right = positive yaw
+				  * Quaternion.AngleAxis(pitch, rightAxis) // drag up    = positive pitch
+				  * obj.rotation
+				);
 			}
+		}
+		public void RegisterObjectInputs()
+		{
+			if (_inputProvider.GetRotatePressed() && _pickObject.Held)
+				_mouseModeProvider.SetMode(MouseMode.ObjectManipulation);
 			if (_inputProvider.GetRotateReleased() && _pickObject.Held)
-			{
 				_mouseModeProvider.SetMode(MouseMode.FreeLook);
-			}
 		}
 	}
 }

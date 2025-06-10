@@ -11,9 +11,9 @@ namespace Lina.Player.Camera
 	public class CameraLook : MonoBehaviour, ICameraLook
 	{
 		[SerializeField] private float _mouseSensitivity = 10f;
-		[SerializeField] private Transform _cameraTransform;
 
 		private IMouseModeProvider _mouseModeProvider;
+		private UnityEngine.Camera _cam;
 
 		private float _yaw, _pitch;
 		private IInputProvider _inputProvider;
@@ -21,8 +21,7 @@ namespace Lina.Player.Camera
 
 		void Awake()
 		{
-			if (_cameraTransform == null)
-				_cameraTransform 	= transform.GetChild(0);
+			_cam = UnityEngine.Camera.main;
 			_inputProvider 			= GetComponent<IInputProvider>();
 			_mouseSetting 			= GetComponent<IMouseSetting>();
 			_mouseModeProvider 		= GetComponent<IMouseModeProvider>();
@@ -46,7 +45,7 @@ namespace Lina.Player.Camera
 			_yaw += deltaX * _mouseSensitivity;
 			_pitch = Mathf.Clamp(_pitch - deltaY * _mouseSensitivity, -90, 90);
 			transform.localRotation = Quaternion.Euler(0, _yaw, 0);
-			_cameraTransform.localRotation = Quaternion.Euler(_pitch, 0, 0);
+			_cam.transform.localRotation = Quaternion.Euler(_pitch, 0, 0);
 		}
 	}
 }
