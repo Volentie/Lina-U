@@ -23,8 +23,11 @@ namespace Lina.Player.Object
 			_HoldObject = GetComponent<IHoldObject>();
 			_cam = UnityEngine.Camera.main;
 		}
-		void FixedUpdate() => HandleObjectRotation();
-		void Update() => HandleObjectInputs();
+		void Update()
+		{
+			HandleObjectRotation();
+			HandleObjectInputs();
+		}
 		public void HandleObjectRotation()
 		{
 			if (_mouseModeProvider.CurrentMode == MouseMode.ObjectManipulation)

@@ -33,7 +33,7 @@ namespace Lina.Player.Camera
 			_mouseSetting.LockMouseCenter();
 		}
 
-		void Update()
+		void LateUpdate()
 		{
 			Vector2 delta = _inputProvider.GetMouseDelta();
 			if (_mouseModeProvider.CurrentMode == MouseMode.FreeLook)
@@ -42,8 +42,11 @@ namespace Lina.Player.Camera
 
 		public void HandleLook(float deltaX, float deltaY)
 		{
-			_yaw += deltaX * _mouseSensitivity;
-			_pitch = Mathf.Clamp(_pitch - deltaY * _mouseSensitivity, -90, 90);
+			float dx = deltaX * _mouseSensitivity;
+			float dy = deltaY * _mouseSensitivity;
+
+			_yaw   += dx;
+			_pitch = Mathf.Clamp(_pitch - dy, -90f, 90f);
 			transform.localRotation = Quaternion.Euler(0, _yaw, 0);
 			_cam.transform.localRotation = Quaternion.Euler(_pitch, 0, 0);
 		}
