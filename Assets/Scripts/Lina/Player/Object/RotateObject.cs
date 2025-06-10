@@ -24,7 +24,7 @@ namespace Lina.Player.Object
 			_cam = UnityEngine.Camera.main;
 		}
 		void FixedUpdate() => HandleObjectRotation();
-		void Update() => RegisterObjectInputs();
+		void Update() => HandleObjectInputs();
 		public void HandleObjectRotation()
 		{
 			if (_mouseModeProvider.CurrentMode == MouseMode.ObjectManipulation)
@@ -49,7 +49,7 @@ namespace Lina.Player.Object
 				);
 			}
 		}
-		public void RegisterObjectInputs()
+		public void HandleObjectInputs()
 		{
 			if (_inputProvider.GetRotatePressed() && _HoldObject.Held)
 				_mouseModeProvider.SetMode(MouseMode.ObjectManipulation);

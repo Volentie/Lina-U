@@ -1,10 +1,6 @@
 namespace Lina.Player.Input
 {
-	using Unity.VisualScripting;
-
 	using UnityEngine;
-	using UnityEngine.UI;
-
 
 	public class InputProvider : MonoBehaviour, IInputProvider
 	{

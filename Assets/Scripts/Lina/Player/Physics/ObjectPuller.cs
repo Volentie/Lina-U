@@ -12,7 +12,7 @@ namespace Lina.Player.Physics
 		{
 			_inputProvider = GetComponent<IInputProvider>();
 		}
-		public void AddScrollShift()
+		void Update()
 		{
 			if (_inputProvider.GetScrollWheelDelta() != 0)
 			{

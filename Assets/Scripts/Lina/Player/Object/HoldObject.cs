@@ -32,11 +32,7 @@ namespace Lina.Player.Object
 			_mouseModeProvider = GetComponent<IMouseModeProvider>();
 			_cam = UnityEngine.Camera.main;
 		}
-		void Update()
-		{
-			TryPickOrRelease();
-			_objectPuller.AddScrollShift();
-		}
+		void Update() => TryPickOrRelease();
 		void FixedUpdate() => ApplyHoldPhysics();
 
 		public void TryPickOrRelease()

@@ -1,6 +1,7 @@
+using UnityEngine;
+
 namespace Lina.Player.Physics
 {
-	using UnityEngine;
 	[RequireComponent(typeof(HandleGravity))]
 	public class HandleJump : MonoBehaviour, IHandleJump
 	{

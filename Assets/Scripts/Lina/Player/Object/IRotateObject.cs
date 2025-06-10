@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Lina.Player.Object
 {
 	interface IRotateObject
