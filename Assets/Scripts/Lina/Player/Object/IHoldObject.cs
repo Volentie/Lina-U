@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Lina.Player.Object
 {
-	interface IPickObject
+	interface IHoldObject
 	{
 		Rigidbody Held { get; }
 		void TryPickOrRelease();

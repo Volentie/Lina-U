@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Lina.Player.Object
 {
 	[RequireComponent(typeof(InputProvider))]
-	[RequireComponent(typeof(PickObject))]
+	[RequireComponent(typeof(HoldObject))]
 	[RequireComponent(typeof(MouseModeManager))]
 	class RotateObject : MonoBehaviour, IRotateObject
 	{
@@ -13,14 +13,14 @@ namespace Lina.Player.Object
 
 		private IInputProvider _inputProvider;
 		private IMouseModeProvider _mouseModeProvider;
-		private IPickObject _pickObject;
+		private IHoldObject _HoldObject;
 		private UnityEngine.Camera _cam;
 
 		void Awake()
 		{
 			_inputProvider = GetComponent<IInputProvider>();
 			_mouseModeProvider = GetComponent<IMouseModeProvider>();
-			_pickObject = GetComponent<IPickObject>();
+			_HoldObject = GetComponent<IHoldObject>();
 			_cam = UnityEngine.Camera.main;
 		}
 		void FixedUpdate() => HandleObjectRotation();
@@ -30,7 +30,7 @@ namespace Lina.Player.Object
 			if (_mouseModeProvider.CurrentMode == MouseMode.ObjectManipulation)
 			{
 
-				Rigidbody obj = _pickObject.Held;
+				Rigidbody obj = _HoldObject.Held;
 				Vector2 delta = _inputProvider.GetMouseDelta();
 
 				float yaw = delta.x * _objectRotationSpeed;
@@ -51,9 +51,9 @@ namespace Lina.Player.Object
 		}
 		public void RegisterObjectInputs()
 		{
-			if (_inputProvider.GetRotatePressed() && _pickObject.Held)
+			if (_inputProvider.GetRotatePressed() && _HoldObject.Held)
 				_mouseModeProvider.SetMode(MouseMode.ObjectManipulation);
-			if (_inputProvider.GetRotateReleased() && _pickObject.Held)
+			if (_inputProvider.GetRotateReleased() && _HoldObject.Held)
 				_mouseModeProvider.SetMode(MouseMode.FreeLook);
 		}
 	}

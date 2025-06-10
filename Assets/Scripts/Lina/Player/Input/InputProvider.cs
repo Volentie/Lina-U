@@ -1,6 +1,11 @@
 namespace Lina.Player.Input
 {
+	using Unity.VisualScripting;
+
 	using UnityEngine;
+	using UnityEngine.UI;
+
+
 	public class InputProvider : MonoBehaviour, IInputProvider
 	{
 		public Vector2 GetMouseDelta() => new Vector2(
@@ -11,6 +16,8 @@ namespace Lina.Player.Input
 			Input.GetAxis("Horizontal"),
 			Input.GetAxis("Vertical")
 		);
+
+		public float GetScrollWheelDelta() => Input.GetAxis("Mouse ScrollWheel");
 
 		public bool GetJumpPressed() => Input.GetKey(KeyCode.Space);
 		public bool GetSprintPressed() => Input.GetKey(KeyCode.LeftShift);

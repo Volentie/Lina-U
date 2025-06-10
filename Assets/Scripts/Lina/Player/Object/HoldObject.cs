@@ -9,7 +9,7 @@ namespace Lina.Player.Object
 	[RequireComponent(typeof(DetectObject))]
 	[RequireComponent(typeof(ObjectPuller))]
 	[RequireComponent(typeof(MouseModeManager))]
-	class PickObject : MonoBehaviour, IPickObject
+	class HoldObject : MonoBehaviour, IHoldObject
 	{
 		[Header("Pull Settings")]
         [SerializeField] private float _pullStrength 	= 0.1f;
@@ -32,7 +32,11 @@ namespace Lina.Player.Object
 			_mouseModeProvider = GetComponent<IMouseModeProvider>();
 			_cam = UnityEngine.Camera.main;
 		}
-		void Update() => TryPickOrRelease();
+		void Update()
+		{
+			TryPickOrRelease();
+			_objectPuller.AddScrollShift();
+		}
 		void FixedUpdate() => ApplyHoldPhysics();
 
 		public void TryPickOrRelease()
