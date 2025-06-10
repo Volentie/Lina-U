@@ -16,8 +16,10 @@ namespace Lina.Player.Object
 		private IObjectPuller _objectPuller;
 		private IInputProvider _inputProvider;
 		private IDetectObject _detectObject;
-		private Rigidbody _held;
 		private UnityEngine.Camera _cam;
+		private Rigidbody _held;
+
+		public Rigidbody Held => _held;
 
 		void Awake()
 		{
