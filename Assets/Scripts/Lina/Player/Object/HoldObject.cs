@@ -41,12 +41,13 @@ namespace Lina.Player.Object
 			{
 				_held = candidate;
 				_held.useGravity = false;
+				_mouseModeProvider.SetState(MouseMode.ObjectHeld);
 			}
 			else if (_held != null && _inputProvider.GetActionReleased())
 			{
 				_held.useGravity = true;
 				_held = null;
-				_mouseModeProvider.SetMode(MouseMode.FreeLook);
+				_mouseModeProvider.SetState(MouseMode.FreeLook);
 			}
 		}
 

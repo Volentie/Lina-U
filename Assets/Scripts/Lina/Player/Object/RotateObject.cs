@@ -25,12 +25,12 @@ namespace Lina.Player.Object
 		}
 		void Update()
 		{
-			HandleObjectRotation();
 			HandleObjectInputs();
+			HandleObjectRotation();
 		}
 		public void HandleObjectRotation()
 		{
-			if (_mouseModeProvider.CurrentMode == MouseMode.ObjectManipulation)
+			if (_mouseModeProvider.CurrentState == MouseMode.ObjectManipulation)
 			{
 
 				Rigidbody obj = _HoldObject.Held;
@@ -55,9 +55,9 @@ namespace Lina.Player.Object
 		public void HandleObjectInputs()
 		{
 			if (_inputProvider.GetRotatePressed() && _HoldObject.Held)
-				_mouseModeProvider.SetMode(MouseMode.ObjectManipulation);
+				_mouseModeProvider.SetState(MouseMode.ObjectManipulation);
 			if (_inputProvider.GetRotateReleased() && _HoldObject.Held)
-				_mouseModeProvider.SetMode(MouseMode.FreeLook);
+				_mouseModeProvider.SetState(MouseMode.FreeLook);
 		}
 	}
 }

@@ -36,7 +36,7 @@ namespace Lina.Player.Camera
 		void LateUpdate()
 		{
 			Vector2 delta = _inputProvider.GetMouseDelta();
-			if (_mouseModeProvider.CurrentMode == MouseMode.FreeLook)
+			if (_mouseModeProvider.CurrentState == MouseMode.FreeLook)
 				HandleLook(delta.x, delta.y);
 		}
 
