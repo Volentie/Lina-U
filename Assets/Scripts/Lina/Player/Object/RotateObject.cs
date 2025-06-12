@@ -1,26 +1,26 @@
 using Lina.Player.Input;
-using Lina.State.Player.Mouse;
+using Lina.State.Object;
 using UnityEngine;
 
 namespace Lina.Player.Object
 {
 	[RequireComponent(typeof(InputProvider))]
 	[RequireComponent(typeof(HoldObject))]
-	[RequireComponent(typeof(MouseModeManager))]
+	[RequireComponent(typeof(ObjectModeManager))]
 	class RotateObject : MonoBehaviour, IRotateObject
 	{
 		[SerializeField] private float _objectRotationSpeed = 10.0f;
 
 		private IInputProvider _inputProvider;
-		private IMouseModeProvider _mouseModeProvider;
-		private IHoldObject _HoldObject;
+		private IObjectModeProvider _objectModeProvider;
+		private IHoldObject _holdObject;
 		private UnityEngine.Camera _cam;
 
 		void Awake()
 		{
 			_inputProvider = GetComponent<IInputProvider>();
-			_mouseModeProvider = GetComponent<IMouseModeProvider>();
-			_HoldObject = GetComponent<IHoldObject>();
+			_objectModeProvider = GetComponent<IObjectModeProvider>();
+			_holdObject = GetComponent<IHoldObject>();
 			_cam = UnityEngine.Camera.main;
 		}
 		void Update()
@@ -30,10 +30,9 @@ namespace Lina.Player.Object
 		}
 		public void HandleObjectRotation()
 		{
-			if (_mouseModeProvider.CurrentState == MouseMode.ObjectManipulation)
+			if (_objectModeProvider.CurrentState == ObjectMode.Rotate)
 			{
-
-				Rigidbody obj = _HoldObject.Held;
+				Rigidbody obj = _holdObject.Held;
 				Vector2 delta = _inputProvider.GetMouseDelta();
 
 				float yaw = delta.x * _objectRotationSpeed;
@@ -54,10 +53,11 @@ namespace Lina.Player.Object
 		}
 		public void HandleObjectInputs()
 		{
-			if (_inputProvider.GetRotatePressed() && _HoldObject.Held)
-				_mouseModeProvider.SetState(MouseMode.ObjectManipulation);
-			if (_inputProvider.GetRotateReleased() && _HoldObject.Held)
-				_mouseModeProvider.SetState(MouseMode.FreeLook);
+			if (_inputProvider.GetRotatePressed() && _holdObject.Held)
+				_objectModeProvider.SetState(ObjectMode.Rotate);
+				
+			if (_inputProvider.GetRotateReleased() && _holdObject.Held)
+				_objectModeProvider.SetState(ObjectMode.Hold);
 		}
 	}
 }

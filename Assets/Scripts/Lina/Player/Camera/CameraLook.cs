@@ -1,18 +1,18 @@
 using UnityEngine;
 using Lina.Player.Input;
 using Lina.Player.Mouse;
-using Lina.State.Player.Mouse;
+using Lina.State.Object;
 
 namespace Lina.Player.Camera
 {
 	[RequireComponent(typeof(InputProvider))]
 	[RequireComponent(typeof(MouseSetting))]
-	[RequireComponent(typeof(MouseModeManager))]
+	[RequireComponent(typeof(ObjectModeManager))]
 	public class CameraLook : MonoBehaviour, ICameraLook
 	{
 		[SerializeField] private float _mouseSensitivity = 10f;
 
-		private IMouseModeProvider _mouseModeProvider;
+		private IObjectModeProvider _objectModeProvider;
 		private UnityEngine.Camera _cam;
 
 		private float _yaw, _pitch;
@@ -24,7 +24,7 @@ namespace Lina.Player.Camera
 			_cam = UnityEngine.Camera.main;
 			_inputProvider 			= GetComponent<IInputProvider>();
 			_mouseSetting 			= GetComponent<IMouseSetting>();
-			_mouseModeProvider 		= GetComponent<IMouseModeProvider>();
+			_objectModeProvider 	= GetComponent<IObjectModeProvider>();
 		}
 
 		void Start()
@@ -36,7 +36,7 @@ namespace Lina.Player.Camera
 		void LateUpdate()
 		{
 			Vector2 delta = _inputProvider.GetMouseDelta();
-			if (_mouseModeProvider.CurrentState == MouseMode.FreeLook)
+			if (_objectModeProvider.CurrentState == ObjectMode.Hold || _objectModeProvider.CurrentState == ObjectMode.Default)
 				HandleLook(delta.x, delta.y);
 		}
 

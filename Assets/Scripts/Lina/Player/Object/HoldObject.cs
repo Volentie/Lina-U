@@ -1,6 +1,6 @@
 using Lina.Player.Input;
 using Lina.Player.Physics;
-using Lina.State.Player.Mouse;
+using Lina.State.Object;
 using UnityEngine;
 
 namespace Lina.Player.Object
@@ -8,7 +8,7 @@ namespace Lina.Player.Object
 	[RequireComponent(typeof(InputProvider))]
 	[RequireComponent(typeof(DetectObject))]
 	[RequireComponent(typeof(ObjectPuller))]
-	[RequireComponent(typeof(MouseModeManager))]
+	[RequireComponent(typeof(ObjectModeManager))]
 	class HoldObject : MonoBehaviour, IHoldObject
 	{
 		[Header("Pull Settings")]
@@ -18,7 +18,7 @@ namespace Lina.Player.Object
 		private IObjectPuller _objectPuller;
 		private IInputProvider _inputProvider;
 		private IDetectObject _detectObject;
-		private IMouseModeProvider _mouseModeProvider;
+		private IObjectModeProvider _objectModeProvider;
 		private UnityEngine.Camera _cam;
 		private Rigidbody _held;
 
@@ -29,7 +29,7 @@ namespace Lina.Player.Object
 			_inputProvider = GetComponent<IInputProvider>();
 			_detectObject = GetComponent<IDetectObject>();
 			_objectPuller = GetComponent<IObjectPuller>();
-			_mouseModeProvider = GetComponent<IMouseModeProvider>();
+			_objectModeProvider = GetComponent<IObjectModeProvider>();
 			_cam = UnityEngine.Camera.main;
 		}
 		void Update() => TryPickOrRelease();
@@ -41,13 +41,13 @@ namespace Lina.Player.Object
 			{
 				_held = candidate;
 				_held.useGravity = false;
-				_mouseModeProvider.SetState(MouseMode.ObjectHeld);
+				_objectModeProvider.SetState(ObjectMode.Hold);
 			}
 			else if (_held != null && _inputProvider.GetActionReleased())
 			{
 				_held.useGravity = true;
 				_held = null;
-				_mouseModeProvider.SetState(MouseMode.FreeLook);
+				_objectModeProvider.SetState(ObjectMode.Default);
 			}
 		}
 
