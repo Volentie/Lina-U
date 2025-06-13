@@ -1,6 +1,7 @@
 using UnityEngine;
 using Lina.Player.Input;
 using Lina.State.Object;
+using UnityEngine.Rendering;
 
 namespace Lina.Player.Physics
 {
@@ -11,6 +12,7 @@ namespace Lina.Player.Physics
     {
 		private IInputProvider _inputProvider;
 		private IObjectModeProvider _objectModeProvider;
+		float maxScrollLength = 0.3f;
 		private float _scrollShift;
 		void Awake()
 		{
@@ -19,14 +21,17 @@ namespace Lina.Player.Physics
 		}
 		void Update()
 		{
-			if (_objectModeProvider.CurrentState != ObjectMode.Hold) return;
+			if (_objectModeProvider.CurrentState != ObjectMode.Hold)
+			{
+				if (_objectModeProvider.CurrentState == ObjectMode.Default && _scrollShift != 0)
+					_scrollShift = 0;
+				return;
+			}
 			if (_inputProvider.GetScrollWheelDelta() != 0)
 			{
 				_scrollShift += _inputProvider.GetScrollWheelDelta();
-				_scrollShift = Mathf.Clamp(_scrollShift, -5f, 5f);
+				_scrollShift = Mathf.Clamp(_scrollShift, -maxScrollLength, maxScrollLength);
 			}
-			if (_scrollShift != 0)
-				_scrollShift = 0;
 		}
 		public Vector3 CalculateVelocity(Rigidbody body, UnityEngine.Camera cam, float pullStrength, float maxLength)
 		{

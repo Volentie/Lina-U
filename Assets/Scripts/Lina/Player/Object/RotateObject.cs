@@ -55,8 +55,7 @@ namespace Lina.Player.Object
 		{
 			if (_inputProvider.GetRotatePressed() && _holdObject.Held)
 				_objectModeProvider.SetState(ObjectMode.Rotate);
-				
-			if (_inputProvider.GetRotateReleased() && _holdObject.Held)
+			else if (_inputProvider.GetRotateReleased() && _holdObject.Held)
 				_objectModeProvider.SetState(ObjectMode.Hold);
 		}
 	}
