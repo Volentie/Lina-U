@@ -1,6 +1,7 @@
+using UnityEngine;
+
 namespace Lina.Player.Physics
 {
-	using UnityEngine;
 	/// <summary>
 	/// Handles air acceleration physics for mid-air strafing and control.
 	/// </summary>

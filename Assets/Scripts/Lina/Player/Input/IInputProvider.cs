@@ -11,6 +11,7 @@ namespace Lina.Player.Input
 		bool GetSprintPressed();
 		bool GetActionPressed();
 		bool GetRotatePressed();
+		bool GetInteractPressed();
 
 		bool GetJumpReleased();
 		bool GetSprintReleased();
