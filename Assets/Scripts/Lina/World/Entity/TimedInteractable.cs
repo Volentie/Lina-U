@@ -38,6 +38,7 @@ namespace Lina.World.Entity
 			if (!IsWaiting)
 			{
 				OnTrigger.Invoke(transform);
+				IsWaiting = true;
 			}
 		}
 		

@@ -10,7 +10,7 @@ namespace Lina.World.SFX
 	{
 		private AudioSource _audioSource;
 
-		void Start()
+		void Awake()
 		{
 			_audioSource = GetComponent<AudioSource>();
 		}
