@@ -9,7 +9,7 @@ namespace Lina.Player.Movement
 	[RequireComponent(typeof(HandleGravity))]
 	[RequireComponent(typeof(HandleJump))]
 	[RequireComponent(typeof(HandleAirAcceleration))]
-	public class PlayerController : MonoBehaviour, IPlayerController
+	public class PlayerController : MonoBehaviour
 	{
 		[SerializeField] private float _speed = 3.0f;
 		public float Speed => _speed;

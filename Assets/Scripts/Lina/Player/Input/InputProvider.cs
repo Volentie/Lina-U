@@ -15,11 +15,12 @@ namespace Lina.Player.Input
 
 		public float GetScrollWheelDelta() => Input.GetAxis("Mouse ScrollWheel");
 
-		public bool GetJumpPressed() => Input.GetKey(KeyCode.Space);
+		public bool GetJumpPressed() => Input.GetKeyDown(KeyCode.Space);
 		public bool GetSprintPressed() => Input.GetKey(KeyCode.LeftShift);
-		public bool GetActionPressed() => Input.GetKey(KeyCode.Mouse0);
+		public bool GetActionPressed() => Input.GetKeyDown(KeyCode.Mouse0);
 		public bool GetRotatePressed() => Input.GetKey(KeyCode.R);
 		public bool GetInteractPressed() => Input.GetKeyDown(KeyCode.E);
+		public bool GetDropPressed() => Input.GetKeyDown(KeyCode.G);
 
 		public bool GetJumpReleased() => Input.GetKeyUp(KeyCode.Space);
 		public bool GetSprintReleased() => Input.GetKeyUp(KeyCode.LeftShift);
