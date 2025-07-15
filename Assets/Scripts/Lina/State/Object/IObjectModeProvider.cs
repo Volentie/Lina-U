@@ -6,6 +6,5 @@ namespace Lina.State.Object
 		Hold,
 		Rotate,
 	}
-	public interface IObjectModeProvider : IStateProvider<ObjectMode>
-	{ }
+	public interface IObjectModeProvider : IStateProvider<ObjectMode> { }
 }

@@ -1,5 +1,6 @@
 using Lina.Player.Input;
 using Lina.Player.Physics;
+using Lina.State.Player;
 using UnityEngine;
 
 namespace Lina.Player.Movement
@@ -9,6 +10,7 @@ namespace Lina.Player.Movement
 	[RequireComponent(typeof(HandleGravity))]
 	[RequireComponent(typeof(HandleJump))]
 	[RequireComponent(typeof(HandleAirAcceleration))]
+	[RequireComponent(typeof(PlayerGeneralStateManager))]
 	public class PlayerController : MonoBehaviour
 	{
 		[SerializeField] private float _speed = 3.0f;
@@ -17,6 +19,7 @@ namespace Lina.Player.Movement
 		private IHandleGravity _handleGravity;
 		private IHandleJump _handleJump;
 		private IHandleAirAcceleration _handleAirMovement;
+		private IPlayerGeneralStateProvider _playerGeneralState;
 		private Vector3 _velocity;
 		private CharacterController _characterController;
 		private bool IsGrounded;
@@ -28,12 +31,16 @@ namespace Lina.Player.Movement
 			_handleGravity = GetComponent<IHandleGravity>();
 			_handleJump = GetComponent<IHandleJump>();
 			_handleAirMovement = GetComponent<IHandleAirAcceleration>();
+			_playerGeneralState = GetComponent<IPlayerGeneralStateProvider>();
 		}
 
 		void Update() => HandleMovement();
 
 		public void HandleMovement()
 		{
+			if (_playerGeneralState.CurrentState != PlayerGeneralState.Free)
+				return;
+
 			Vector3 wishDir = transform.forward * _inputProvider.GetMovementDelta().y + transform.right * _inputProvider.GetMovementDelta().x;
 			wishDir = Vector3.ClampMagnitude(wishDir, 1.0f);
 			_velocity = new Vector3(wishDir.x, _velocity.y, wishDir.z);

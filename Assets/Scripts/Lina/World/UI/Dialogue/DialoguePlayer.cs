@@ -1,25 +1,30 @@
 using UnityEngine;
 using Lina.Player.Input;
 using TMPro;
+using Lina.State.Player;
 
 namespace Lina.World.UI
 {
 	public class DialoguePlayer : MonoBehaviour
 	{
 		[Header("UI References")]
-		[SerializeField] private GameObject _dialogueBox;
 		[SerializeField] private TMP_Text _textField;
 
 		[Header("Dependencies")]
 		[SerializeField] private GameObject _playerController;
 
 		private IInputProvider _inputProvider;
+		private IPlayerGeneralStateProvider _playerGeneralState;
 		private string[] _dialogues;
 		private int _line = 0;
 		void Awake()
 		{
 			if (_playerController != null)
+			{
 				_inputProvider = _playerController.GetComponent<IInputProvider>();
+				_playerGeneralState = _playerController.GetComponent<IPlayerGeneralStateProvider>();
+				gameObject.SetActive(false);
+			}
 			else
 				Debug.LogError("Missing PlayerController");
 			if (_inputProvider == null)
@@ -27,7 +32,7 @@ namespace Lina.World.UI
 		}
 		void Update()
 		{
-			if (!_dialogueBox.activeSelf || _inputProvider == null)
+			if (!gameObject.activeSelf || _inputProvider == null)
 				return;
 
 			if (_line < _dialogues.Length)
@@ -39,16 +44,20 @@ namespace Lina.World.UI
 				}
 			}
 			else
-				_dialogueBox.SetActive(false);
+			{
+				_playerGeneralState.SetState(PlayerGeneralState.Free);
+				gameObject.SetActive(false);
+			}
 		}
 		public void PlaySequential(DialogueType dialogue)
 		{
 			if (dialogue == null || dialogue.DialogueLines.Length == 0)
 				return;
 
+			_playerGeneralState.SetState(PlayerGeneralState.InDialogue);
 			_line = 0;
 			_dialogues = dialogue.DialogueLines;
-			_dialogueBox.SetActive(true);
+			gameObject.SetActive(true);
 		}
 	}
 }
