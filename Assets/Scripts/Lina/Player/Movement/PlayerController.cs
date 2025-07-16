@@ -11,7 +11,6 @@ namespace Lina.Player.Movement
 	[RequireComponent(typeof(HandleJump))]
 	[RequireComponent(typeof(HandleAirAcceleration))]
 	[RequireComponent(typeof(PlayerGeneralStateManager))]
-	[RequireComponent(typeof(PlayerMoveStateManager))]
 	public class PlayerController : MonoBehaviour
 	{
 		[SerializeField] private float _speed = 3.0f;
@@ -21,12 +20,10 @@ namespace Lina.Player.Movement
 		private IHandleJump _handleJump;
 		private IHandleAirAcceleration _handleAirMovement;
 		private IPlayerGeneralStateProvider _playerGeneralState;
-		private IPlayerMoveStateProvider _playerMoveState;
 
 		private Vector3 _velocity;
 		private CharacterController _characterController;
 		private bool IsGrounded;
-
 		void Awake()
 		{
 			_characterController = GetComponent<CharacterController>();
@@ -35,26 +32,20 @@ namespace Lina.Player.Movement
 			_handleJump = GetComponent<IHandleJump>();
 			_handleAirMovement = GetComponent<IHandleAirAcceleration>();
 			_playerGeneralState = GetComponent<IPlayerGeneralStateProvider>();
-			_playerMoveState = GetComponent<IPlayerMoveStateProvider>();
 		}
 
 		void Update() => HandleMovement();
 
 		public void HandleMovement()
 		{
-			if (_playerGeneralState.CurrentState != PlayerGeneralState.Free)
+			if (!_playerGeneralState.IsCurrentState(PlayerGeneralState.Free))
 				return;
 
 			Vector3 wishDir = transform.forward * _inputProvider.GetMovementDelta().y + transform.right * _inputProvider.GetMovementDelta().x;
 			wishDir = Vector3.ClampMagnitude(wishDir, 1.0f);
-
-			if (wishDir.magnitude > 0 && _playerMoveState.CurrentState != PlayerMoveState.Running)
-				_playerMoveState.SetState(PlayerMoveState.Walking);
-			else
-				_playerMoveState.SetState(PlayerMoveState.Idle);
-
 			_velocity = new Vector3(wishDir.x, _velocity.y, wishDir.z);
 			IsGrounded = _characterController.isGrounded;
+
 			if (!IsGrounded)
 			{
 				_handleAirMovement.AirAccelerate(wishDir, ref _velocity, transform);
@@ -66,19 +57,10 @@ namespace Lina.Player.Movement
 				{
 					_velocity.x *= 1.5f;
 					_velocity.z *= 1.5f;
-					_playerMoveState.SetState(PlayerMoveState.Running);
-				}
-				else if (_inputProvider.GetSprintReleased())
-				{
-					if (_inputProvider.GetMovementDelta() != Vector2.zero)
-						_playerMoveState.SetState(PlayerMoveState.Walking);
-					else
-						_playerMoveState.SetState(PlayerMoveState.Idle);
 				}
 				if (_inputProvider.GetJumpPressed())
 				{
 					_handleJump.DoJump(ref _velocity);
-					_playerMoveState.SetState(PlayerMoveState.Jumping);
 				}
 			}
 			Vector3 moveVec = _velocity * Speed * Time.deltaTime;

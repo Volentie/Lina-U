@@ -4,9 +4,10 @@ namespace Lina.World.SFX
 {
 	public interface ISFX
 	{
-		bool IsPlaying { get; }
-		void PlayOneShot(AudioClip clip);
-		void PlayLooping(AudioClip clip);
+		float CurrentPitch { get; }
+		bool IsPlaying();
+		void PlayOneShot(AudioClip clip, float pitch);
+		void PlayLooping(AudioClip clip, float pitch);
 		void StopPlaying();
 	}
 }

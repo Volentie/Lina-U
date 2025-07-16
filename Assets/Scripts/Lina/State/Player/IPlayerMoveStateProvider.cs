@@ -4,8 +4,7 @@ namespace Lina.State.Player
 	{
 		Idle,
 		Walking,
-		Running,
-		Jumping
+		Running
 	}
 	
 	public interface IPlayerMoveStateProvider : IStateProvider<PlayerMoveState> { }

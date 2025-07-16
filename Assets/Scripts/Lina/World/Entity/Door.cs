@@ -1,5 +1,4 @@
 using System.Collections;
-using Lina.Player.Object;
 using UnityEngine;
 
 namespace Lina.World

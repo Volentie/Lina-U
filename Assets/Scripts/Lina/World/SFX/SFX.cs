@@ -9,11 +9,17 @@ namespace Lina.World.SFX
 	public class SFX : MonoBehaviour, ISFX
 	{
 		private AudioSource _audioSource;
-		public bool IsPlaying => _audioSource.isPlaying;
+
+		public float CurrentPitch => _audioSource.pitch;
 
 		void Awake()
 		{
 			_audioSource = GetComponent<AudioSource>();
+		}
+
+		public bool IsPlaying()
+		{
+			return _audioSource.isPlaying;
 		}
 
 		public void StopPlaying()
@@ -21,10 +27,11 @@ namespace Lina.World.SFX
 			_audioSource.Stop();
 		}
 
-		public void PlayOneShot(AudioClip clip)
+		public void PlayOneShot(AudioClip clip, float pitch)
 		{
 			if (clip != null)
 			{
+				_audioSource.pitch = pitch;
 				_audioSource.PlayOneShot(clip);
 			}
 		}
@@ -37,12 +44,13 @@ namespace Lina.World.SFX
 			}
 		}
 
-		public void PlayLooping(AudioClip clip)
+		public void PlayLooping(AudioClip clip, float pitch)
 		{
 			if (clip != null)
 			{
 				_audioSource.clip = clip;
 				_audioSource.loop = true;
+				_audioSource.pitch = pitch;
 				_audioSource.Play();
 			}
 		}

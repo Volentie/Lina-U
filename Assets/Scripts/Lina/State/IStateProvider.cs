@@ -7,6 +7,7 @@ namespace Lina.State
         TState CurrentState { get; }
 
         void SetState(TState state);
+		bool IsCurrentState(TState state);
 
         event Action<TState> OnStateChanged;
     }
