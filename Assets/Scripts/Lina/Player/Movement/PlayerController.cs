@@ -23,7 +23,7 @@ namespace Lina.Player.Movement
 
 		private Vector3 _velocity;
 		private CharacterController _characterController;
-		private bool IsGrounded;
+		public bool IsGrounded;
 		void Awake()
 		{
 			_characterController = GetComponent<CharacterController>();

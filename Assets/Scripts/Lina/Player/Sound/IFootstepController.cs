@@ -1,9 +1,8 @@
 namespace Lina.Player.Sound
 {
-	public interface IFootstepController
+	public interface IFootstepController : IBaseSoundController
 	{
 		void TryPlayWalking();
 		void TryPlayRunning();
-		void TryStop();
 	}
 }

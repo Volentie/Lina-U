@@ -6,5 +6,5 @@ namespace Lina.State.Player
 		InDialogue
 	}
 	
-	public interface IPlayerGeneralStateProvider : IStateProvider<PlayerGeneralState> { }
+	public interface IPlayerGeneralStateProvider : IStateProvider<PlayerGeneralState> { };
 }
