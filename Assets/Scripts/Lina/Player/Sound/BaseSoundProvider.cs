@@ -1,5 +1,5 @@
 using UnityEngine;
-using Lina.World.SFX;
+using Lina.World.Sound;
 using System;
 
 namespace Lina.Player.Sound

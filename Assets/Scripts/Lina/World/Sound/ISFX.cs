@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Lina.World.SFX
+namespace Lina.World.Sound
 {
 	public interface ISFX
 	{
@@ -11,7 +11,7 @@ namespace Lina.World.SFX
 		bool IsPlaying();
 		void PlayOneShot(AudioClip clip, float pitch);
 		void PlayAtTime(AudioClip clip, float pitch, float time, bool loop);
-		//void PlayLooping(AudioClip clip, float pitch);
+		void PlayLooping(AudioClip clip, float pitch);
 		//void ResetAudio(AudioClip clip);
 		void StopPlaying();
 	}

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Lina.World.SFX
+namespace Lina.World.Sound
 {
 	public class SFX : MonoBehaviour, ISFX
 	{
@@ -60,6 +60,17 @@ namespace Lina.World.SFX
 			}
 		}
 
+		public void PlayLooping(AudioClip clip, float pitch)
+		{
+			if (clip != null && _audioSource != null)
+			{
+				_audioSource.clip = clip;
+				_audioSource.pitch = pitch;
+				_audioSource.loop = true;
+				_audioSource.Play();
+			}
+		}
+
 		// public void SetAudioTime(float time)
 		// {
 		// 	if (_audioSource != null)
@@ -71,17 +82,6 @@ namespace Lina.World.SFX
 		// 	if (clip != null && _audioSource.time != 0f)
 		// 	{
 		// 		_audioSource.time = 0f;
-		// 	}
-		// }
-
-		// public void PlayLooping(AudioClip clip, float pitch)
-		// {
-		// 	if (clip != null && _audioSource != null)
-		// 	{
-		// 		_audioSource.clip = clip;
-		// 		_audioSource.loop = true;
-		// 		_audioSource.pitch = pitch;
-		// 		_audioSource.Play();
 		// 	}
 		// }
 	}

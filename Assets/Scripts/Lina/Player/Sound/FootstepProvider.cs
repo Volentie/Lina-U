@@ -11,14 +11,13 @@ namespace Lina.Player.Sound
 		[SerializeField]
 		private AudioClip _footstepSound;
 		private const float WALKPITCH = 1f;
-		private const float RUNPITCH = 2f;
+		private const float RUNPITCH = 1.4f;
 
 		protected override void OnAwake()
 		{
 			if (_footstepSound == null)
 				throw new Exception("Footstep sound was not set");
 		}
-		
 
 		public void TryPlayWalking()
 		{
