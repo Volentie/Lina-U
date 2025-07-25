@@ -1,11 +1,9 @@
 using UnityEngine;
-using Lina.State;
 using System;
 
 namespace Lina.Player.Sound
 {
 	[RequireComponent(typeof(BaseSoundProvider))]
-	[RequireComponent(typeof(PlayerAirStateController))]
 	public class FootstepProvider : BaseSoundProvider, IFootstepProvider
 	{
 		[SerializeField]
@@ -21,22 +19,22 @@ namespace Lina.Player.Sound
 
 		public void TryPlayWalking()
 		{
-			if (!IsPlaying() || CurrentPitch() != WALKPITCH)
+			if (!_sfx.IsPlaying || _sfx.CurrentPitch != WALKPITCH)
 			{
 				float time = Mathf.Clamp(_sfx.CurrentTime, 0f, _footstepSound.length - 0.01f);
-				TryStop();
+				_sfx.Stop();
 
-				PlayAtTime(_footstepSound, WALKPITCH, time, false);
+				_sfx.PlayAtTime(_footstepSound, WALKPITCH, time, false);
 			}
 		}
 		public void TryPlayRunning()
 		{
-			if (!IsPlaying() || CurrentPitch() != RUNPITCH)
+			if (!_sfx.IsPlaying || _sfx.CurrentPitch != RUNPITCH)
 			{
 				float time = Mathf.Clamp(_sfx.CurrentTime, 0f, _footstepSound.length - 0.01f);
-				TryStop();
+				_sfx.Stop();
 
-				PlayAtTime(_footstepSound, RUNPITCH, time, false);
+				_sfx.PlayAtTime(_footstepSound, RUNPITCH, time, false);
 			}
 		}
 	}

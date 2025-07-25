@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace Lina.Player.Sound
 {
 	public interface IBaseSoundProvider

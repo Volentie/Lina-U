@@ -10,10 +10,7 @@ namespace Lina.World.Entity
 
 		void Awake()
 		{
-			string providerKey = GetType().Name;
 			_sfx = GetComponent<ISFX>();
-			_sfx.CreateAudioSource(providerKey);
-			_sfx.UseAudioSource(providerKey);
 		}
 
 		public void PlayLoopingSimple(AudioClip clip)

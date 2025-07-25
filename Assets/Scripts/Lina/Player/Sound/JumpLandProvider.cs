@@ -18,7 +18,7 @@ namespace Lina.Player.Sound
 				throw new Exception("Jump or land sound was not set");
 		}
 
-		public void TryPlayJumping() => PlayOneShot(_jumpSound, _jumpPitch);
-		public void TryPlayLanding() => PlayOneShot(_landSound, _landPitch);
+		public void TryPlayJumping() => _sfx.PlayOneShot(_jumpSound, _jumpPitch);
+		public void TryPlayLanding() => _sfx.PlayOneShot(_landSound, _landPitch);
 	}
 }

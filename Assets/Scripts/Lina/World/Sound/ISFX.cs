@@ -6,13 +6,13 @@ namespace Lina.World.Sound
 	{
 		float CurrentPitch { get; }
 		float CurrentTime { get; }
-		void CreateAudioSource(string key);
-		void UseAudioSource(string key);
-		bool IsPlaying();
+		bool IsPlaying { get; }
+		// void CreateAudioSource(string key);
+		// void UseAudioSource(string key);
 		void PlayOneShot(AudioClip clip, float pitch);
 		void PlayAtTime(AudioClip clip, float pitch, float time, bool loop);
 		void PlayLooping(AudioClip clip, float pitch);
 		//void ResetAudio(AudioClip clip);
-		void StopPlaying();
+		void Stop();
 	}
 }

@@ -1,33 +1,41 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace Lina.World.Sound
 {
 	public class SFX : MonoBehaviour, ISFX
 	{
-		private Dictionary<string, AudioSource> _audioSources = new Dictionary<string, AudioSource>();
+		//private Dictionary<string, AudioSource> _audioSources = new Dictionary<string, AudioSource>();
 		private AudioSource _audioSource;
 		public float CurrentPitch => _audioSource != null ? _audioSource.pitch : 0f;
 		public float CurrentTime => _audioSource != null && _audioSource.clip != null ? _audioSource.time : 0f;
+		public bool IsPlaying => _audioSource != null && _audioSource.isPlaying;
 
-		public void CreateAudioSource(string key)
+		void Awake()
 		{
-			if (!_audioSources.ContainsKey(key))
-				_audioSources[key] = gameObject.AddComponent<AudioSource>();
-		}
-
-		public void UseAudioSource(string key)
-		{
-			if (_audioSource != _audioSources[key])
+			_audioSource = GetComponent<AudioSource>();
+			if (_audioSource is null)
 			{
-				if (_audioSources.TryGetValue(key, out AudioSource source))
-					_audioSource = source;
-				else
-					Debug.LogWarning($"AudioSource for key '{key}' not found.");
+				throw new Exception($"An audio source was not found in '{gameObject}'");
 			}
 		}
 
-		public bool IsPlaying() => _audioSource != null && _audioSource.isPlaying;
+		// public void CreateAudioSource(string key)
+		// {
+		// 	if (!_audioSources.ContainsKey(key))
+		// 		_audioSources[key] = gameObject.AddComponent<AudioSource>();
+		// }
+
+		// public void UseAudioSource(string key)
+		// {
+		// 	if (_audioSource != _audioSources[key])
+		// 	{
+		// 		if (_audioSources.TryGetValue(key, out AudioSource source))
+		// 			_audioSource = source;
+		// 		else
+		// 			Debug.LogWarning($"AudioSource for key '{key}' not found.");
+		// 	}
+		// }
 
 		public void StopPlaying()
 		{
@@ -40,7 +48,7 @@ namespace Lina.World.Sound
 
 		public void PlayOneShot(AudioClip clip, float pitch)
 		{
-			if (clip != null && _audioSource != null)
+			if (clip != null)
 			{
 				_audioSource.clip = clip;
 				_audioSource.pitch = pitch;
@@ -50,7 +58,7 @@ namespace Lina.World.Sound
 
 		public void PlayAtTime(AudioClip clip, float pitch, float time, bool loop)
 		{
-			if (clip != null && _audioSource != null)
+			if (clip != null)
 			{
 				_audioSource.clip = clip;
 				_audioSource.pitch = pitch;
@@ -62,7 +70,7 @@ namespace Lina.World.Sound
 
 		public void PlayLooping(AudioClip clip, float pitch)
 		{
-			if (clip != null && _audioSource != null)
+			if (clip != null)
 			{
 				_audioSource.clip = clip;
 				_audioSource.pitch = pitch;
@@ -71,18 +79,12 @@ namespace Lina.World.Sound
 			}
 		}
 
-		// public void SetAudioTime(float time)
-		// {
-		// 	if (_audioSource != null)
-		// 		_audioSource.time = time;
-		// }
-
-		// public void ResetAudio(AudioClip clip)
-		// {
-		// 	if (clip != null && _audioSource.time != 0f)
-		// 	{
-		// 		_audioSource.time = 0f;
-		// 	}
-		// }
+		public void Stop()
+		{
+			if (_audioSource.isPlaying)
+			{
+				_audioSource.Stop();
+			}
+		}
 	}
 }

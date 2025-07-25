@@ -6,8 +6,6 @@ namespace Lina.Player.Sound
 {
 	[RequireComponent(typeof(PlayerMoveStateController))]
 	[RequireComponent(typeof(PlayerAirStateController))]
-	[RequireComponent(typeof(JumpLandProvider))]
-	[RequireComponent(typeof(FootstepProvider))]
 	public class PlayerSoundManager : MonoBehaviour
 	{
 		IPlayerMoveStateProvider _playerMoveState;
@@ -19,8 +17,8 @@ namespace Lina.Player.Sound
 		{
 			_playerMoveState = GetComponent<IPlayerMoveStateProvider>();
 			_playerAirState = GetComponent<IPlayerAirStateProvider>();
-			_jumpLandProvider = GetComponent<IJumpLandProvider>();
-			_footstepProvider = GetComponent<IFootstepProvider>();
+			_jumpLandProvider = GetComponentInChildren<IJumpLandProvider>();
+			_footstepProvider = GetComponentInChildren<IFootstepProvider>();
 		}
 
 		void Update() => HandlePlayerSounds();
