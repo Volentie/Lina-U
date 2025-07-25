@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 namespace Lina.Player.Object
 {
@@ -6,10 +7,14 @@ namespace Lina.Player.Object
 	{
 		public float RayLength => 3f;
 		private UnityEngine.Camera _cam;
+
 		void Awake()
 		{
 			_cam = UnityEngine.Camera.main;
+			if (_cam == null)
+				throw new Exception("Main camera was not found on Player");
 		}
+
 		public RaycastHit RayCast()
 		{
 			LayerMask layerMask = LayerMask.GetMask("Object", "Interactable", "Weapon");

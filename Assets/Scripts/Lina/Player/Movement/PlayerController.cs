@@ -10,7 +10,7 @@ namespace Lina.Player.Movement
 	[RequireComponent(typeof(HandleGravity))]
 	[RequireComponent(typeof(HandleJump))]
 	[RequireComponent(typeof(HandleAirAcceleration))]
-	[RequireComponent(typeof(PlayerGeneralStateManager))]
+	[RequireComponent(typeof(PlayerGeneralStateController))]
 	public class PlayerController : MonoBehaviour
 	{
 		[SerializeField] private float _speed = 3.0f;
@@ -23,7 +23,6 @@ namespace Lina.Player.Movement
 
 		private Vector3 _velocity;
 		private CharacterController _characterController;
-		public bool IsGrounded;
 		void Awake()
 		{
 			_characterController = GetComponent<CharacterController>();
@@ -44,9 +43,8 @@ namespace Lina.Player.Movement
 			Vector3 wishDir = transform.forward * _inputProvider.GetMovementDelta().y + transform.right * _inputProvider.GetMovementDelta().x;
 			wishDir = Vector3.ClampMagnitude(wishDir, 1.0f);
 			_velocity = new Vector3(wishDir.x, _velocity.y, wishDir.z);
-			IsGrounded = _characterController.isGrounded;
 
-			if (!IsGrounded)
+			if (!_characterController.isGrounded)
 			{
 				_handleAirMovement.AirAccelerate(wishDir, ref _velocity, transform);
 				_handleGravity.ApplyGravity(ref _velocity);

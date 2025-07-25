@@ -1,25 +1,26 @@
 using UnityEngine;
 using Lina.State.Player;
 using Lina.State;
+
 namespace Lina.Player.Sound
 {
-	[RequireComponent(typeof(PlayerMoveStateManager))]
-	[RequireComponent(typeof(PlayerAirStateManager))]
-	[RequireComponent(typeof(JumpLandController))]
-	[RequireComponent(typeof(FootstepController))]
+	[RequireComponent(typeof(PlayerMoveStateController))]
+	[RequireComponent(typeof(PlayerAirStateController))]
+	[RequireComponent(typeof(JumpLandProvider))]
+	[RequireComponent(typeof(FootstepProvider))]
 	public class PlayerSoundManager : MonoBehaviour
 	{
 		IPlayerMoveStateProvider _playerMoveState;
 		IPlayerAirStateProvider _playerAirState;
-		IJumpLandController _jumpController;
-		IFootstepController _footstepController;
+		IJumpLandProvider _jumpLandProvider;
+		IFootstepProvider _footstepProvider;
 
 		void Awake()
 		{
 			_playerMoveState = GetComponent<IPlayerMoveStateProvider>();
 			_playerAirState = GetComponent<IPlayerAirStateProvider>();
-			_jumpController = GetComponent<IJumpLandController>();
-			_footstepController = GetComponent<IFootstepController>();
+			_jumpLandProvider = GetComponent<IJumpLandProvider>();
+			_footstepProvider = GetComponent<IFootstepProvider>();
 		}
 
 		void Update() => HandlePlayerSounds();
@@ -29,18 +30,19 @@ namespace Lina.Player.Sound
 			if (_playerAirState.IsCurrentState(PlayerAirState.Grounded))
 			{
 				if (_playerMoveState.IsCurrentState(PlayerMoveState.Walking))
-					_footstepController.TryPlayWalking();
+					_footstepProvider.TryPlayWalking();
 				else if (_playerMoveState.IsCurrentState(PlayerMoveState.Running))
-					_footstepController.TryPlayRunning();
+					_footstepProvider.TryPlayRunning();
 				else if (_playerMoveState.IsCurrentState(PlayerMoveState.Idle))
-					_footstepController.TryStop();
+					_footstepProvider.TryStop();
 			}
 			else
 			{
+				_footstepProvider.TryStop();
 				if (_playerAirState.IsCurrentState(PlayerAirState.Jumping))
-					_jumpController.TryPlayJumping();
+					_jumpLandProvider.TryPlayJumping();
 				else if (_playerAirState.IsCurrentState(PlayerAirState.Landing))
-					_jumpController.TryPlayLanding();
+					_jumpLandProvider.TryPlayLanding();
 			}
 		}
 	}

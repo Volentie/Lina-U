@@ -4,7 +4,7 @@ using Lina.Player.Input;
 namespace Lina.Player.State
 {
 	[RequireComponent(typeof(InputProvider))]
-	[RequireComponent(typeof(PlayerMoveStateManager))]
+	[RequireComponent(typeof(PlayerMoveStateController))]
 	public class MovementStateManager : MonoBehaviour
 	{
 		private IInputProvider _inputProvider;

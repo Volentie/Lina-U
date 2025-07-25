@@ -1,6 +1,6 @@
 namespace Lina.Player.Sound
 {
-	public interface IBaseSoundController
+	public interface IBaseSoundProvider
 	{
 		void TryStop();
 	}

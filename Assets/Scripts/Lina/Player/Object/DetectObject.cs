@@ -24,5 +24,4 @@ namespace Lina.Player.Object
 			return default;
 		}
 	}
-
 }

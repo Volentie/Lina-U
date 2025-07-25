@@ -9,7 +9,7 @@ namespace Lina.Player.Camera
 	[RequireComponent(typeof(InputProvider))]
 	[RequireComponent(typeof(MouseSetting))]
 	[RequireComponent(typeof(ObjectModeManager))]
-	[RequireComponent(typeof(PlayerGeneralStateManager))]
+	[RequireComponent(typeof(PlayerGeneralStateController))]
 	public class CameraLook : MonoBehaviour, ICameraLook
 	{
 		[SerializeField] private float _mouseSensitivity = 10f;

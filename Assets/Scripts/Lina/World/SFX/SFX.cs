@@ -1,58 +1,88 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// A reusable component for playing audio clips. Can be controlled by other scripts or UnityEvents.
-/// </summary>
 namespace Lina.World.SFX
 {
-	[RequireComponent(typeof(AudioSource))]
 	public class SFX : MonoBehaviour, ISFX
 	{
+		private Dictionary<string, AudioSource> _audioSources = new Dictionary<string, AudioSource>();
 		private AudioSource _audioSource;
+		public float CurrentPitch => _audioSource != null ? _audioSource.pitch : 0f;
+		public float CurrentTime => _audioSource != null && _audioSource.clip != null ? _audioSource.time : 0f;
 
-		public float CurrentPitch => _audioSource.pitch;
-
-		void Awake()
+		public void CreateAudioSource(string key)
 		{
-			_audioSource = GetComponent<AudioSource>();
+			if (!_audioSources.ContainsKey(key))
+				_audioSources[key] = gameObject.AddComponent<AudioSource>();
 		}
 
-		public bool IsPlaying()
+		public void UseAudioSource(string key)
 		{
-			return _audioSource.isPlaying;
+			if (_audioSource != _audioSources[key])
+			{
+				if (_audioSources.TryGetValue(key, out AudioSource source))
+					_audioSource = source;
+				else
+					Debug.LogWarning($"AudioSource for key '{key}' not found.");
+			}
 		}
+
+		public bool IsPlaying() => _audioSource != null && _audioSource.isPlaying;
 
 		public void StopPlaying()
 		{
-			_audioSource.Stop();
+			if (_audioSource != null)
+			{
+				_audioSource.Stop();
+				_audioSource.clip = null;
+			}
 		}
 
 		public void PlayOneShot(AudioClip clip, float pitch)
 		{
-			if (clip != null)
+			if (clip != null && _audioSource != null)
 			{
+				_audioSource.clip = clip;
 				_audioSource.pitch = pitch;
 				_audioSource.PlayOneShot(clip);
 			}
 		}
 
-		public void ResetAudio(AudioClip clip)
+		public void PlayAtTime(AudioClip clip, float pitch, float time, bool loop)
 		{
-			if (clip != null)
-			{
-				_audioSource.time = 0f;
-			}
-		}
-
-		public void PlayLooping(AudioClip clip, float pitch)
-		{
-			if (clip != null)
+			if (clip != null && _audioSource != null)
 			{
 				_audioSource.clip = clip;
-				_audioSource.loop = true;
 				_audioSource.pitch = pitch;
+				_audioSource.time = time;
+				_audioSource.loop = loop;
 				_audioSource.Play();
 			}
 		}
+
+		// public void SetAudioTime(float time)
+		// {
+		// 	if (_audioSource != null)
+		// 		_audioSource.time = time;
+		// }
+
+		// public void ResetAudio(AudioClip clip)
+		// {
+		// 	if (clip != null && _audioSource.time != 0f)
+		// 	{
+		// 		_audioSource.time = 0f;
+		// 	}
+		// }
+
+		// public void PlayLooping(AudioClip clip, float pitch)
+		// {
+		// 	if (clip != null && _audioSource != null)
+		// 	{
+		// 		_audioSource.clip = clip;
+		// 		_audioSource.loop = true;
+		// 		_audioSource.pitch = pitch;
+		// 		_audioSource.Play();
+		// 	}
+		// }
 	}
 }
